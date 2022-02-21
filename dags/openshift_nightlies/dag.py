@@ -10,6 +10,7 @@ from airflow.models.baseoperator import chain
 from airflow.operators.bash import BashOperator
 from airflow.utils.task_group import TaskGroup
 from airflow.config_templates.airflow_local_settings import LOG_FORMAT
+from airflow.models.param import Param
 
 # Configure Path to have the Python Module on it
 sys.path.append(os.path.abspath(os.path.dirname(__file__)))
@@ -58,7 +59,10 @@ class AbstractOpenshiftNightlyDAG(ABC):
             description=f"DAG for Openshift Nightly builds {self.release_name}",
             schedule_interval=self.config.schedule_interval,
             max_active_runs=1,
-            catchup=False
+            catchup=False,
+            params={
+                'URL': Param(default='com',type='string')
+                }
         )
 
         super().__init__()
@@ -99,11 +103,15 @@ class CloudOpenshiftNightlyDAG(AbstractOpenshiftNightlyDAG):
             benchmark_tasks = self._get_e2e_benchmarks().get_benchmarks()
             chain(*benchmark_tasks)
 
-        if self.config.cleanup_on_success:
-            cleanup_cluster = installer.get_cleanup_task()
-            install_cluster >> connect_to_platform >> benchmarks >> utils >> cleanup_cluster >> final_status
+        if self.dag.params.URL == "com":
+            install_cluster >> connect_to_platform
         else:
-            install_cluster >> connect_to_platform >> benchmarks >> utils
+            install_cluster >> connect_to_platform >> benchmarks
+        #if self.config.cleanup_on_success:
+        #   cleanup_cluster = installer.get_cleanup_task()
+        #    install_cluster >> connect_to_platform >> benchmarks >> utils >> cleanup_cluster >> final_status
+        #else:
+        #    install_cluster >> connect_to_platform >> benchmarks >> utils
 
     def _get_openshift_installer(self):
         return openshift.CloudOpenshiftInstaller(self.dag, self.config, self.release)
