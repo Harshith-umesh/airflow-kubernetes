@@ -103,7 +103,7 @@ class CloudOpenshiftNightlyDAG(AbstractOpenshiftNightlyDAG):
             benchmark_tasks = self._get_e2e_benchmarks().get_benchmarks()
             chain(*benchmark_tasks)
 
-        if self.dag.params.URL == "com":
+        if self.dag.params['URL'] == "com":
             install_cluster >> connect_to_platform
         else:
             install_cluster >> connect_to_platform >> benchmarks
