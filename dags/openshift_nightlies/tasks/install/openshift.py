@@ -76,17 +76,16 @@ class AbstractOpenshiftInstaller(ABC):
         return self._get_task(operation="cleanup")
     
     def get_manual_ocp_version(self):
-        if self.dag.params['openshift_client_location'] != "default" and self.dag.params['openshift_install_binary_url'] != "default":
-            self.config['openshift_client_location'] = self.dag.params['openshift_client_location']
-            self.config['openshift_install_binary_url'] = self.dag.params['openshift_install_binary_url']
+        return {"openshift_client_location": self.dag.params['openshift_client_location'] , "openshift_install_binary_url": self.dag.params['openshift_install_binary_url'] }
 
     def _setup_task(self, operation="install"):
-        self.config = {**self.config,
-                       ** self._get_playbook_operations(operation)}
+        if self.dag.params['openshift_client_location'] != "default" and self.dag.params['openshift_install_binary_url'] != "default":
+            self.config = {**self.config, ** self._get_playbook_operations(operation), ** self.get_manual_ocp_version()}
+        else:
+            self.config = {**self.config, ** self._get_playbook_operations(operation)}
         self.config['openshift_cluster_name'] = self.cluster_name
         self.config['dynamic_deploy_path'] = f"{self.config['openshift_cluster_name']}"
         self.config['kubeconfig_path'] = f"/root/{self.config['dynamic_deploy_path']}/auth/kubeconfig"
-        self.get_manual_ocp_version()
         self.env = {
             "SSHKEY_TOKEN": self.config['sshkey_token'],
             "ORCHESTRATION_HOST": self.config['orchestration_host'],
