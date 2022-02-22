@@ -2,10 +2,11 @@
 
 set -ex
 
-while getopts j: flag
+while getopts j:b: flag
 do
     case "${flag}" in
         j) json_file=${OPTARG};;
+        b) binary=${OPTARG};;
     esac
 done
 
