@@ -76,7 +76,8 @@ class AbstractOpenshiftInstaller(ABC):
         return self._get_task(operation="cleanup")
     
     def get_manual_ocp_version(self):
-        return {"openshift_client_location": self.dag.params['openshift_client_location'] , "openshift_install_binary_url": self.dag.params['openshift_install_binary_url'] }
+        print("kdjflkdjfkjdfkjfdkdjflkjffdkjfk000000000000000")
+        return {"openshift_client_locationq": self.dag.params['openshift_client_location'] , "openshift_install_binary_url": self.dag.params['openshift_install_binary_url'] }
 
     def _setup_task(self, operation="install"):
         if self.dag.params['openshift_client_location'] != "default" and self.dag.params['openshift_install_binary_url'] != "default":
