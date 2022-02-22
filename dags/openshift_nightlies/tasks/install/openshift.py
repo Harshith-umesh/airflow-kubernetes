@@ -89,7 +89,7 @@ class AbstractOpenshiftInstaller(ABC):
         self.config['dynamic_deploy_path'] = f"{self.config['openshift_cluster_name']}"
         self.config['kubeconfig_path'] = f"/root/{self.config['dynamic_deploy_path']}/auth/kubeconfig"
         self.config['abd'] = f"{self.dag.params['openshift_client_location']}"
-        self.config['abdt'] = f"{{{{ params.openshift_client_location }}}}"
+        self.config['abdt'] = f"{{ params.openshift_client_location }}"
         self.env = {
             "SSHKEY_TOKEN": self.config['sshkey_token'],
             "ORCHESTRATION_HOST": self.config['orchestration_host'],
