@@ -6,6 +6,7 @@ from openshift_nightlies.models.dag_config import DagConfig
 from os import environ
 import json
 import requests
+import logging
 from abc import ABC, abstractmethod
 
 from airflow.operators.bash import BashOperator
@@ -76,10 +77,10 @@ class AbstractOpenshiftInstaller(ABC):
         return self._get_task(operation="cleanup")
     
     def get_manual_ocp_version(self):
-        print("kdjflkdjfkjdfkjfdkdjflkjffdkjfk000000000000000")
         return {"openshift_client_locationq": self.dag.params['openshift_client_location'] , "openshift_install_binary_url": self.dag.params['openshift_install_binary_url'] }
 
     def _setup_task(self, operation="install"):
+        logging.warning('%s dkfjdkfjkdjkfjdfjdjdfjsddddddddddddddd',self.dag.params['openshift_client_location'])
         if self.dag.params['openshift_client_location'] != "default" and self.dag.params['openshift_install_binary_url'] != "default":
             self.config = {**self.config, ** self._get_playbook_operations(operation), ** self.get_manual_ocp_version()}
         else:
