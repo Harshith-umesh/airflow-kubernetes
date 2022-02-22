@@ -53,7 +53,7 @@ class AbstractOpenshiftInstaller(ABC):
             **self.openstack_creds,
             **self.rosa_creds,
             **self.rhacs_creds,
-            #**self.release.get_latest_release(),
+            **self.release.get_latest_release(),
             **{ "es_server": var_loader.get_secret('elasticsearch'),
                 "thanos_receiver_url": var_loader.get_secret('thanos_receiver_url'),
                 "loki_receiver_url": var_loader.get_secret('loki_receiver_url') }
@@ -74,6 +74,11 @@ class AbstractOpenshiftInstaller(ABC):
     def get_cleanup_task(self):
         # trigger_rule = "all_done" means this task will run when every other task has finished, whether it fails or succeededs
         return self._get_task(operation="cleanup")
+    
+    def get_manual_ocp_version(self):
+        if self.dag.params['openshift_client_location'] != "default" and self.dag.params['openshift_install_binary_url'] != "default":
+            self.config['openshift_client_location'] = self.dag.params['openshift_client_location']
+            self.config['openshift_install_binary_url'] = self.dag.params['openshift_install_binary_url']
 
     def _setup_task(self, operation="install"):
         self.config = {**self.config,
@@ -81,6 +86,7 @@ class AbstractOpenshiftInstaller(ABC):
         self.config['openshift_cluster_name'] = self.cluster_name
         self.config['dynamic_deploy_path'] = f"{self.config['openshift_cluster_name']}"
         self.config['kubeconfig_path'] = f"/root/{self.config['dynamic_deploy_path']}/auth/kubeconfig"
+        self.get_manual_ocp_version()
         self.env = {
             "SSHKEY_TOKEN": self.config['sshkey_token'],
             "ORCHESTRATION_HOST": self.config['orchestration_host'],

@@ -61,7 +61,8 @@ class AbstractOpenshiftNightlyDAG(ABC):
             max_active_runs=1,
             catchup=False,
             params={
-                'URL': Param(default='com',type='string')
+                'openshift_client_location': Param(default='default',type='string'),
+                'openshift_install_binary_url': Param(default='default',type='string')
                 }
         )
 
