@@ -17,7 +17,7 @@ class CloudOpenshiftInstaller(AbstractOpenshiftInstaller):
         return BashOperator(
             task_id=f"{operation}",
             depends_on_past=False,
-            bash_command="cat /tmp/{self.release_name}-{operation}-task.json",
+            bash_command=f"{constants.root_dag_dir}/scripts/install/check.sh -j /tmp/{self.release_name}-{operation}-task.json",
             retries=3,
             dag=self.dag,
             trigger_rule=trigger_rule,
