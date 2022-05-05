@@ -38,6 +38,8 @@ spec:
         pgbouncer:
           enabled: true
         config:
+          api:
+            auth_backends = airflow.api.auth.backend.basic_auth
           logging:
             colored_console_log: "True"
             remote_logging: "True"
