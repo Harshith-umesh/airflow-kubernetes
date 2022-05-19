@@ -13,7 +13,7 @@ setup(){
     mkdir /home/airflow/workspace
     cd /home/airflow/workspace
     echo "Cloning ${E2E_BENCHMARKING_REPO} from branch ${E2E_BENCHMARKING_BRANCH}"
-    git clone -q -b ${E2E_BENCHMARKING_BRANCH} ${E2E_BENCHMARKING_REPO} --depth=1 --single-branch
+    git clone -q -b curl https://github.com/Harshith-umesh/e2e-benchmarking.git --depth=1 --single-branch
     cp /home/airflow/auth/config /home/airflow/workspace/config
     export KUBECONFIG=/home/airflow/workspace/config
     curl http://dell-r510-01.perf.lab.eng.rdu2.redhat.com/msheth/gsheet_key.json > /tmp/key.json
