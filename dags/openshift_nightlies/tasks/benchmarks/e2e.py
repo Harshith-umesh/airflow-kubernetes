@@ -25,7 +25,6 @@ class E2EBenchmarks():
         self.dag_config = config
         self.exec_config = executor.get_executor_config_with_cluster_access(self.dag_config, self.release, task_group=self.task_group)
         self.snappy_creds = var_loader.get_secret("snappy_creds", deserialize_json=True)
-        self.es_gold = var_loader.get_secret("es_gold")
         self.es_server_baseline = var_loader.get_secret("es_server_baseline")
 
         # Specific Task Configuration
@@ -39,7 +38,6 @@ class E2EBenchmarks():
             "SNAPPY_USER_FOLDER": self.git_name,
             "PLATFORM": self.release.platform,
             "TASK_GROUP": self.task_group,
-            "ES_GOLD": self.es_gold,
             "ES_SERVER_BASELINE": self.es_server_baseline
         }
         self.env.update(self.dag_config.dependencies)
@@ -113,6 +111,9 @@ class E2EBenchmarks():
 
     def _get_benchmark(self, benchmark):
         env = {**self.env, **benchmark.get('env', {}), **{"ES_SERVER": var_loader.get_secret('elasticsearch'), "KUBEADMIN_PASSWORD": environ.get("KUBEADMIN_PASSWORD", "")}}
+        # Fetch variables from a secret with the name <DAG_NAME>-<TASK_NAME>
+        task_variables = var_loader.get_secret(f"{self.dag.dag_id}-{benchmark['name']}", True, False)
+        env.update(task_variables)
         task_prefix=f"{self.task_group}-"
         task = BashOperator(
                 task_id=f"{task_prefix if self.task_group != 'benchmarks' else ''}{benchmark['name']}",

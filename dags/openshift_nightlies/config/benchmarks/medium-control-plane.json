@@ -1,14 +1,6 @@
 {
     "benchmarks": [
         {
-            "name": "baseline",
-            "workload": "baseline-performance",
-            "command": "./baseline_perf.sh",
-            "env": {
-                "WATCH_TIME": "15"
-            }
-        },
-        {
             "name": "node-density",
             "workload": "kube-burner",
             "trigger_rule": "all_done",
@@ -20,12 +12,13 @@
                 "JOB_TIMEOUT": "18000",
                 "QPS": "20",
                 "BURST": "20",
-                "STEP_SIZE": "2m",
+                "STEP_SIZE": "1m",
                 "LOG_LEVEL": "info",
                 "CLEANUP_WHEN_FINISH": "true",
                 "CLEANUP": "true",
                 "MUST_GATHER_EACH_TASK": "true",
-                "CLEANUP_TIMEOUT": "1h"
+                "CLEANUP_TIMEOUT": "1h",
+                "METRICS_PROFILE": "metrics-aggregated.yaml"
             }
         },
         {
@@ -40,12 +33,13 @@
                 "JOB_TIMEOUT": "18000",
                 "QPS": "20",
                 "BURST": "20",
-                "STEP_SIZE": "2m",
+                "STEP_SIZE": "1m",
                 "LOG_LEVEL": "info",
                 "CLEANUP_WHEN_FINISH": "true",
                 "CLEANUP": "true",
                 "MUST_GATHER_EACH_TASK": "true",
-                "CLEANUP_TIMEOUT": "1h"
+                "CLEANUP_TIMEOUT": "1h",
+                "METRICS_PROFILE": "metrics-aggregated.yaml"
             }
         },
         {
@@ -60,12 +54,13 @@
                 "JOB_TIMEOUT": "18000",
                 "QPS": "20",
                 "BURST": "20",
-                "STEP_SIZE": "2m",
+                "STEP_SIZE": "1m",
                 "LOG_LEVEL": "info",
                 "CLEANUP_WHEN_FINISH": "true",
                 "CLEANUP": "true",
                 "MUST_GATHER_EACH_TASK": "true",
-                "CLEANUP_TIMEOUT": "1h"
+                "CLEANUP_TIMEOUT": "1h",
+                "METRICS_PROFILE": "metrics-aggregated.yaml"
             }
         },
         {
@@ -77,7 +72,7 @@
                 "WORKLOAD": "cluster-density",
                 "JOB_ITERATIONS": "1000",
                 "JOB_TIMEOUT": "18000",
-                "STEP_SIZE": "2m",
+                "STEP_SIZE": "1m",
                 "QPS": "20",
                 "BURST": "20",
                 "LOG_LEVEL": "info",
