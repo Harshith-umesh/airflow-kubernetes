@@ -80,23 +80,25 @@ if [[ $PLATFORM == "baremetal" ]]; then
     run_baremetal_benchmark
     echo $UUID
 else
-    setup
-    cd /home/airflow/workspace/e2e-benchmarking/workloads/$workload
+    echo "############"
+    echo ${CUUID}
+    #setup
+    #cd /home/airflow/workspace/e2e-benchmarking/workloads/$workload
     
-    eval "$command"
+    #eval "$command"
     benchmark_rv=$?
 
-    if [[ ${MUST_GATHER_EACH_TASK} == "true" && ${benchmark_rv} -eq 1 ]] ; then
-        echo -e "must gather collection enabled for this task"
-        cd ../../utils/scale-ci-diagnosis
-        export OUTPUT_DIR=$PWD
-        export PROMETHEUS_CAPTURE=false
-        export PROMETHEUS_CAPTURE_TYPE=full
-        export OPENSHIFT_MUST_GATHER=true
-        export STORAGE_MODE=snappy
-        export WORKLOAD=$AIRFLOW_CTX_TASK_ID-must-gather
-        ./ocp_diagnosis.sh > /dev/null
-    fi
+    #if [[ ${MUST_GATHER_EACH_TASK} == "true" && ${benchmark_rv} -eq 1 ]] ; then
+    #    echo -e "must gather collection enabled for this task"
+    #    cd ../../utils/scale-ci-diagnosis
+    #    export OUTPUT_DIR=$PWD
+    #    export PROMETHEUS_CAPTURE=false
+    #    export PROMETHEUS_CAPTURE_TYPE=full
+    #    export OPENSHIFT_MUST_GATHER=true
+    #    export STORAGE_MODE=snappy
+    #    export WORKLOAD=$AIRFLOW_CTX_TASK_ID-must-gather
+    #    ./ocp_diagnosis.sh > /dev/null
+    #fi
     echo $UUID
     exit $benchmark_rv
 fi
