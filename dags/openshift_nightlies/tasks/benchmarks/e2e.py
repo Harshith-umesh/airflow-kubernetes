@@ -131,7 +131,8 @@ class E2EBenchmarks():
                 env={ **env, "CUUID": '{{ ti.xcom_pull(task_ids='install') }}' },
                 do_xcom_push=True,
                 execution_timeout=timedelta(seconds=21600),
-                executor_config=self.exec_config
+                executor_config=self.exec_config,
+                provide_context= True
         )
 
         self._add_indexer(task)
