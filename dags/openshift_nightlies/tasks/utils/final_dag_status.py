@@ -19,7 +19,7 @@ def final_status(**kwargs):
     CUUID=ti.xcom_pull(task_ids='install')
     print(CUUID)
     print("#####################################")
-    print(environ.get('CUUID'))
+
     if len(failed_tasks) > 0:
         raise Exception("Tasks {} failed. Failing this DAG run".format(failed_tasks))
 
@@ -32,8 +32,6 @@ def get_task(dag):
         python_callable=final_status,
         trigger_rule='all_done',
         retries=0,
-        env={
-        "CUUID": '{{ ti.xcom_pull(task_ids='install' }}'},
         dag=dag,
 
     )
