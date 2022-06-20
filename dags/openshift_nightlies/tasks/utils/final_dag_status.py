@@ -33,7 +33,7 @@ def get_task(dag):
         trigger_rule='all_done',
         retries=0,
         env={
-        "CUUID": '{{ ti.xcom_pull(task_ids="install",key="cuuid")}}'},
+        "CUUID": '{{ ti.xcom_pull(task_ids='install' }}'},
         dag=dag,
 
     )
