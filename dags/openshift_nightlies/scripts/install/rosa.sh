@@ -178,56 +178,7 @@ setup(){
     export ES_SERVER=$(cat ${json_file} | jq -r .es_server)
     export UUID=$(uuidgen)    
     export CUUID=$UUID
-    '''if [[ $INSTALL_METHOD == "osd" ]]; then
-        export OCM_CLI_VERSION=$(cat ${json_file} | jq -r .ocm_cli_version)
-        if [[ ${OCM_CLI_VERSION} != "null" ]]; then
-            OCM_CLI_FORK=$(cat ${json_file} | jq -r .ocm_cli_fork)
-            git clone -q --depth=1 --single-branch --branch ${OCM_CLI_VERSION} ${OCM_CLI_FORK}
-            pushd ocm-cli
-            sudo PATH=$PATH:/usr/bin:/usr/local/go/bin make
-            sudo mv ocm /usr/local/bin/
-            popd
-        fi
-        echo "Create new OSD access key.."
-        export ADMIN_KEY=$(aws iam create-access-key --user-name OsdCcsAdmin)
-        export AWS_ACCESS_KEY_ID=$(echo $ADMIN_KEY | jq -r '.AccessKey.AccessKeyId')
-        export AWS_SECRET_ACCESS_KEY=$(echo $ADMIN_KEY | jq -r '.AccessKey.SecretAccessKey')
-        ocm login --url=https://api.stage.openshift.com --token="${ROSA_TOKEN}"
-        ocm whoami
-        sleep 60 # it takes a few sec for new access key
-        echo "Check AWS Username..."
-        aws iam get-user | jq -r .User.UserName        
-    else
-        export ROSA_CLI_VERSION=$(cat ${json_file} | jq -r .rosa_cli_version)
-        if [[ ${ROSA_CLI_VERSION} != "container" ]]; then
-            ROSA_CLI_FORK=$(cat ${json_file} | jq -r .rosa_cli_fork)
-            git clone -q --depth=1 --single-branch --branch ${ROSA_CLI_VERSION} ${ROSA_CLI_FORK}
-            pushd rosa
-            make
-            sudo mv rosa /usr/local/bin/
-            popd
-        fi
-        ocm login --url=https://api.stage.openshift.com --token="${ROSA_TOKEN}"
-        ocm whoami        
-        rosa login --env=${ROSA_ENVIRONMENT}
-        rosa whoami
-        rosa verify quota
-        rosa verify permissions
-        if [ "${MANAGED_OCP_VERSION}" == "latest" ] ; then
-            export ROSA_VERSION=$(rosa list versions -o json --channel-group=${MANAGED_CHANNEL_GROUP} | jq -r '.[] | select(.raw_id|startswith('\"${version}\"')) | .raw_id' | sort -rV | head -1)
-        elif [ "${MANAGED_OCP_VERSION}" == "prelatest" ] ; then
-            export ROSA_VERSION=$(rosa list versions -o json --channel-group=${MANAGED_CHANNEL_GROUP} | jq -r '.[] | select(.raw_id|startswith('\"${version}\"')) | .raw_id' | sort -rV | head -2 | tail -1)
-        else
-            export ROSA_VERSION=$(rosa list versions -o json --channel-group=${MANAGED_CHANNEL_GROUP} | jq -r '.[] | select(.raw_id|startswith('\"${version}\"')) | .raw_id' | grep ^${MANAGED_OCP_VERSION}$)
-        fi
-        [ -z "${ROSA_VERSION}" ] && echo "ERROR: Image not found for version (${version}) on ROSA ${MANAGED_CHANNEL_GROUP} channel group" && exit 1
-        if [ "${MANAGED_CHANNEL_GROUP}" == "nightly" ] ; then
-            ROSA_VERSION="${ROSA_VERSION}-nightly"
-        elif [ "${MANAGED_CHANNEL_GROUP}" == "candidate" ] ; then
-            ROSA_VERSION="${ROSA_VERSION}-candidate"
-        fi
-        return 0
-    fi'''
+
 }
 
 install(){
