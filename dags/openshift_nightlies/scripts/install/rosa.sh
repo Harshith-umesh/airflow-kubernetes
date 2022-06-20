@@ -177,7 +177,8 @@ setup(){
     export NETWORK_TYPE=$(cat ${json_file} | jq -r .openshift_network_type)
     export ES_SERVER=$(cat ${json_file} | jq -r .es_server)
     export UUID=$(uuidgen)    
-    if [[ $INSTALL_METHOD == "osd" ]]; then
+    export CUUID=$UUID
+    '''if [[ $INSTALL_METHOD == "osd" ]]; then
         export OCM_CLI_VERSION=$(cat ${json_file} | jq -r .ocm_cli_version)
         if [[ ${OCM_CLI_VERSION} != "null" ]]; then
             OCM_CLI_FORK=$(cat ${json_file} | jq -r .ocm_cli_fork)
@@ -226,7 +227,7 @@ setup(){
             ROSA_VERSION="${ROSA_VERSION}-candidate"
         fi
         return 0
-    fi
+    fi'''
 }
 
 install(){
@@ -368,15 +369,16 @@ if [[ "$operation" == "install" ]]; then
     CLUSTER_STATUS=$(_get_cluster_status ${CLUSTER_NAME})
     if [ -z "${CLUSTER_STATUS}" ] ; then
         printf "INFO: Cluster not found, installing..."
-        install
-        index_metadata
+        #install
+        #index_metadata
     elif [ "${CLUSTER_STATUS}" == "ready" ] ; then
         printf "INFO: Cluster ${CLUSTER_NAME} already installed and ready, reusing..."
-	    postinstall
+	    #postinstall
     else
         printf "INFO: Cluster ${CLUSTER_NAME} already installed but not ready, exiting..."
 	    exit 1
     fi
+    echo "${CLUSTER_NAME} ${CUUID}"
 
 elif [[ "$operation" == "cleanup" ]]; then
     printf "Running Cleanup Steps"
