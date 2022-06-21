@@ -124,7 +124,7 @@ class E2EBenchmarks():
         task = BashOperator(
                 task_id=f"{task_prefix if self.task_group != 'benchmarks' else ''}{benchmark['name']}",
                 depends_on_past=False,
-                bash_command=f"{constants.root_dag_dir}/scripts/run_benchmark.sh -w {benchmark['workload']} -c {benchmark['command']} -u {{ ti.xcom_pull(task_ids='install') }}",
+                bash_command=f"{constants.root_dag_dir}/scripts/run_benchmark.sh -w {benchmark['workload']} -c {benchmark['command']} ", #-u {{ ti.xcom_pull(task_ids='install') }}",
                 retries=0,
                 trigger_rule=benchmark.get("trigger_rule", "all_success"),
                 dag=self.dag,

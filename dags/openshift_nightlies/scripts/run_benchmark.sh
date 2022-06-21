@@ -1,11 +1,11 @@
 #!/bin/bash
 
-while getopts w:c:u: flag
+while getopts w:c: flag
 do
     case "${flag}" in
         w) workload=${OPTARG};;
         c) command=${OPTARG};;
-        u) uid=${OPTARG};;
+        #u) uid=${OPTARG};;
     esac
 done
 
