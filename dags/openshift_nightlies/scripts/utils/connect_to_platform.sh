@@ -120,9 +120,11 @@ EOF
 if [[ $REL_PLATFORM == "baremetal" ]]; then
     bm_setup
 else
-    setup
-    cleanup_old_resources
-    generate_external_labels
-    install_grafana_agent
-    install_promtail
+    echo $CUUIDD
+    echo "#############################"
+    #setup
+    #cleanup_old_resources
+    #generate_external_labels
+    #install_grafana_agent
+    #install_promtail
 fi
