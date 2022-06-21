@@ -1,11 +1,11 @@
 #!/bin/bash
 
-while getopts w:c: flag
+while getopts w:c:u: flag
 do
     case "${flag}" in
         w) workload=${OPTARG};;
         c) command=${OPTARG};;
-        #u) uid=${OPTARG};;
+        u) uid=${OPTARG};;
     esac
 done
 
@@ -82,7 +82,8 @@ if [[ $PLATFORM == "baremetal" ]]; then
     echo $UUID
 else
     echo "############"
-    echo ${uid}
+    echo ${CUUID}
+    echo $uid
     #setup
     #cd /home/airflow/workspace/e2e-benchmarking/workloads/$workload
     

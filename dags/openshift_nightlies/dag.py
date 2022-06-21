@@ -179,10 +179,11 @@ class RosaNightlyDAG(AbstractOpenshiftNightlyDAG):
         task = BashOperator(
                 task_id=f"ben",
                 depends_on_past=False,
-                bash_command=f"{constants.root_dag_dir}/scripts/run_benchmark.sh -w djslk -c ersdf ", #-u {{ ti.xcom_pull(task_ids='install') }}",
+                bash_command=f"{constants.root_dag_dir}/scripts/run_benchmark.sh -w djslk -c ersdf -u CUUID", #-u {{ ti.xcom_pull(task_ids='install') }}",
                 retries=0,
                 trigger_rule="all_success",
                 dag=self.dag,
+                env= { "CUUID": "ertrtr"},
                 do_xcom_push=True,
                 execution_timeout=timedelta(seconds=21600)
                 #executor_config=self.exec_config
