@@ -333,7 +333,9 @@ if [[ "$operation" == "install" ]]; then
 
 elif [[ "$operation" == "cleanup" ]]; then
     printf "Running Cleanup Steps"
-    cleanup
-    index_metadata
-    rosa logout
+    #cleanup
+    #index_metadata
+    #rosa logout
+    echo $CUUIDD
+    echo "##############"
 fi

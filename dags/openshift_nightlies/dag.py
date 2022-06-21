@@ -189,8 +189,9 @@ class RosaNightlyDAG(AbstractOpenshiftNightlyDAG):
                 #executor_config=self.exec_config
         )
 
+        cleanup_cluster = installer.get_cleanup_task()
         #rosa_post_installation = self._get_rosa_postinstall_setup()._get_rosa_postinstallation()
-        install_cluster >> connect_to_platform >>  task >> final_status
+        install_cluster >> connect_to_platform >>  task >> cleanup_cluster >> final_status
         #if self.config.cleanup_on_success:
             #cleanup_cluster = installer.get_cleanup_task()
          #   install_cluster >> rosa_post_installation >> connect_to_platform >> benchmarks >> cleanup_cluster >> final_status
