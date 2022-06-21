@@ -175,7 +175,7 @@ class RosaNightlyDAG(AbstractOpenshiftNightlyDAG):
         #with TaskGroup("benchmarks", prefix_group_id=False, dag=self.dag) as benchmarks:
          #   benchmark_tasks = self._get_e2e_benchmarks().get_benchmarks()
          #   chain(*benchmark_tasks)
-        
+        j={"a":"d"}
         task = BashOperator(
                 task_id=f"ben",
                 depends_on_past=False,
@@ -183,7 +183,7 @@ class RosaNightlyDAG(AbstractOpenshiftNightlyDAG):
                 retries=0,
                 trigger_rule="all_success",
                 dag=self.dag,
-                env= { "CUUID": "ertrtr", "CUUIDD": '{{ ti.xcom_pull(task_ids="install")}}'},
+                env= { **j, "CUUID": "ertrtr", "CUUIDD": '{{ ti.xcom_pull(task_ids="install")}}'},
                 do_xcom_push=True,
                 execution_timeout=timedelta(seconds=21600)
                 #executor_config=self.exec_config
