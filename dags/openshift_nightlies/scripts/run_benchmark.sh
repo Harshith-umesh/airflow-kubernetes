@@ -83,7 +83,7 @@ if [[ $PLATFORM == "baremetal" ]]; then
 else
     echo "############"
     echo ${CUUID}
-    echo $uid
+    echo $CUUIDD
     #setup
     #cd /home/airflow/workspace/e2e-benchmarking/workloads/$workload
     
