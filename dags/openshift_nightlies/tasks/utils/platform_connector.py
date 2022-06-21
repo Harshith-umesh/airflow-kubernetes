@@ -53,6 +53,6 @@ class PlatformConnectorTask():
             retries=3,
             dag=self.dag,
             env={ **self.env , "CUUIDD": '{{ ti.xcom_pull(task_ids="install")}}'},
-            cwd=f"{constants.root_dag_dir}/scripts/utils",
-            executor_config=self.exec_config
+            cwd=f"{constants.root_dag_dir}/scripts/utils"
+            #executor_config=self.exec_config
         )
