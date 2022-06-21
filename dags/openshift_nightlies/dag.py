@@ -172,12 +172,24 @@ class RosaNightlyDAG(AbstractOpenshiftNightlyDAG):
         install_cluster = installer.get_install_task()
         #connect_to_platform = self._get_platform_connector().get_task()
         final_status=final_dag_status.get_task(self.dag)
-        with TaskGroup("benchmarks", prefix_group_id=False, dag=self.dag) as benchmarks:
-            benchmark_tasks = self._get_e2e_benchmarks().get_benchmarks()
-            chain(*benchmark_tasks)
+        #with TaskGroup("benchmarks", prefix_group_id=False, dag=self.dag) as benchmarks:
+         #   benchmark_tasks = self._get_e2e_benchmarks().get_benchmarks()
+         #   chain(*benchmark_tasks)
         
+        task = BashOperator(
+                task_id=f"ben",
+                depends_on_past=False,
+                bash_command= "echo 'kdsjfkd' ", #-u {{ ti.xcom_pull(task_ids='install') }}",
+                retries=0,
+                trigger_rule="all_success",
+                dag=self.dag,
+                do_xcom_push=True,
+                execution_timeout=timedelta(seconds=21600)
+                #executor_config=self.exec_config
+        )
+
         #rosa_post_installation = self._get_rosa_postinstall_setup()._get_rosa_postinstallation()
-        install_cluster >> benchmarks >> final_status
+        install_cluster >> task >> final_status
         #if self.config.cleanup_on_success:
             #cleanup_cluster = installer.get_cleanup_task()
          #   install_cluster >> rosa_post_installation >> connect_to_platform >> benchmarks >> cleanup_cluster >> final_status
