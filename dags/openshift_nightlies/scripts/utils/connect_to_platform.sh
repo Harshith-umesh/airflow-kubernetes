@@ -121,7 +121,7 @@ if [[ $REL_PLATFORM == "baremetal" ]]; then
     bm_setup
 else
     echo $CUUIDD
-    echo "#############################"
+    echo "#############################tgrf"
     #setup
     #cleanup_old_resources
     #generate_external_labels
