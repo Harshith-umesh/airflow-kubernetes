@@ -46,13 +46,14 @@ class PlatformConnectorTask():
 
     def get_task(self):
         task_prefix=f"{self.task_group}-"
+        env={ **self.env , "CUUIDD": '{{ ti.xcom_pull(task_ids="install")}}'}
         return BashOperator(
             task_id=f"{task_prefix if self.task_group != '' else ''}connect-to-platform",
             depends_on_past=False,
             bash_command=f"{constants.root_dag_dir}/scripts/utils/connect_to_platform.sh ",
             retries=3,
             dag=self.dag,
-            env={ **self.env , "CUUIDD": '{{ ti.xcom_pull(task_ids="install")}}'},
+            env=env,
             cwd=f"{constants.root_dag_dir}/scripts/utils"
             #executor_config=self.exec_config
         )
