@@ -60,7 +60,7 @@ spec:
             default_ui_timezone: UTC
           secrets:
             backend: airflow.providers.hashicorp.secrets.vault.VaultBackend
-            backend_kwargs: '{"connections_path": "connections", "variables_path": "variables", "kubernetes_role": "airflow", "auth_type": "kubernetes", "mount_point": "airflow", "url": "http://vault-active.vault.svc.cluster.local:8200"}'
+            backend_kwargs: '{"connections_path": "connections", "variables_path": "variables", "kubernetes_role": "airflow", "auth_type": "kubernetes", "mount_point": "airflow", "url": "http://10.128.2.7:8200"}'
         dags:
           gitSync:
             maxFailures: 10
