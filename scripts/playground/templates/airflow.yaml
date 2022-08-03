@@ -63,9 +63,11 @@ spec:
             backend_kwargs: '{"connections_path": "connections", "variables_path": "variables", "kubernetes_role": "airflow", "auth_type": "kubernetes", "mount_point": "airflow", "url": "http://vault-active.vault.svc.cluster.local:8200"}'
         dags:
           gitSync:
+            maxFailures: 10
             enabled: true
             subPath: dags
             depth: 8
+            wait: 10
         webserver:
           replicas: 1
           defaultUser:
